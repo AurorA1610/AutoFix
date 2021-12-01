@@ -13,7 +13,7 @@ import BuildRoundedIcon from '@mui/icons-material/BuildRounded';
 
 const options = [
     'Home',
-    'Services'
+    'Garages'
 ];
 const ITEM_HEIGHT = 48;
 
@@ -32,7 +32,7 @@ const Navigation = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" sx={{ backgroundColor: '#AF601A' }}>
+            <AppBar position="static" style={{ backgroundColor: '#AF601A' }}>
                 <Toolbar>
                 <IconButton
                     aria-label="more"
@@ -64,12 +64,12 @@ const Navigation = () => {
                     {options.map((option) => (
                     <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
                         <NavLink style={ { textDecoration: 'none', color: 'black' } } to={`/${option.toLowerCase()}`}>
-                            <Button color="inherit" sx={{ fontWeight: 'bold'  }}>{option}</Button>
+                            <Button color="inherit" style={{ fontWeight: 'bold'  }}>{option}</Button>
                         </NavLink>
                     </MenuItem>
                     ))}
                 </Menu>
-                <Typography variant="h4" component="div" sx={{ flexGrow: 1, color: '#CEA78D' }}>
+                <Typography variant="h4" component="div" style={{ flexGrow: 1, color: '#CEA78D' }}>
                     <span style={{ fontFamily: 'Courier New', fontWeight: 'bold', fontStyle: 'italic' }}>
                         AutoFix
                     </span><BuildRoundedIcon fontSize="large" />

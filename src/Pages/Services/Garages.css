@@ -1,0 +1,7 @@
+.garage-card{
+    border: '2px solid red'; 
+    background-color: '#E8DAEF';
+}
+.garage-card:hover {
+    background-color: '#BE77E0';
+}
