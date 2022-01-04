@@ -30,7 +30,7 @@ const Concern = () => {
       ...concernInfo,
     };
     console.log(concern);
-    fetch("http://localhost:5000/concerns", {
+    fetch("https://intense-earth-74345.herokuapp.com/concerns", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(concern),

@@ -6,7 +6,7 @@ import Garage from './Garage';
 const Garages = () => {
     const [garages, setGarages] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/garages').then(res => res.json()).then(data => setGarages(data));
+        fetch('https://intense-earth-74345.herokuapp.com/garages').then(res => res.json()).then(data => setGarages(data));
     }, []);
     return (
         <Container style={{ marginTop: 50 }}>
