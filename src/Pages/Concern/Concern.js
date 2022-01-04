@@ -1,50 +1,122 @@
-import {  Alert, Button, CircularProgress, Container, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Container, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
 
 const Concern = () => {
+  const user = useAuth();
+  const [inputValue, setInputValue] = useState("");
+  const initialInfo = {
+    userName: user.user.displayName,
+    email: user.user.email,
+    phone: user.user.phoneNumber,
+  };
+  const [concernInfo, setConcernInfo] = useState(initialInfo);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    const [data, setData] = useState("");
+  const handleOnBlur = (e) => {
+    const field = e.target.name;
+    const value = e.target.value;
+    setInputValue(e.target.value);
+    const newInfo = { ...concernInfo };
+    newInfo[field] = value;
+    setConcernInfo(newInfo);
+  };
 
-    const location = useLocation();
-    const navigate = useNavigate();
+  const handleConcernSubmit = (e) => {
+    const concern = {
+      ...concernInfo,
+    };
+    console.log(concern);
+    fetch("http://localhost:5000/concerns", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(concern),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          alert(
+            "Your concern has been recorded. Please Wait till the garage contacts you."
+          );
+          setInputValue("");
+        }
+      });
+    e.preventDefault();
+  };
+  return (
+    <Container sx={{ mt: 5 }}>
+      <form onSubmit={handleConcernSubmit}>
+        <Typography
+          variant="h3"
+          gutterBottom
+          style={{ marginTop: 50, marginBottom: 50 }}
+        >
+          Tell Us Your Concern <hr />
+        </Typography>
 
+        <TextField
+          type="text"
+          label="Name"
+          sx={{ width: "75%", m: 1 }}
+          defaultValue={user.user.displayName}
+          color="secondary"
+          name="userName"
+          onBlur={handleOnBlur}
+          variant="outlined"
+        />
 
-    const handleOnChange = e => {
-        const value = e.target.value;
-        setData(value);
-    }
+        <TextField
+          type="number"
+          label="Phone no."
+          sx={{ width: "75%", m: 1 }}
+          defaultValue={user.user.phoneNumber}
+          name="phone"
+          color="secondary"
+          onBlur={handleOnBlur}
+          variant="outlined"
+        />
 
-    const handleSubmit = e => {
-        console.log(data);
-        alert("Your concern is noted. You'll be contacted soon");
-        setData("");
-    }
+        <TextField
+          type="email"
+          label="Email"
+          sx={{ width: "75%", m: 1 }}
+          defaultValue={user.user.email}
+          name="email"
+          color="secondary"
+          onBlur={handleOnBlur}
+          variant="outlined"
+        />
 
-    return (
-        <Container sx={ { mt: 5 } }>
-            <Typography variant="h3" gutterBottom style={{ marginTop: 130, marginBottom: 50 }}>
-                Tell Us Your Concern
-            </Typography>
-            <TextField
-                sx={ { width:"75%", m:1 } }
-                label="Type your concern here"
-                name="concern"
-                color="secondary" 
-                value={ data }
-                onChange={ handleOnChange }
-                variant="outlined" />
+        <TextField
+          sx={{ width: "75%", m: 1 }}
+          label="Type your concern here"
+          value={inputValue}
+          name="concern"
+          color="secondary"
+          onBlur={handleOnBlur}
+          variant="outlined"
+        />
 
-            <Button
-                sx={ { width: "30%" } }
-                style={{ marginTop: 50, marginBottom: 50}}
-                onClick={ handleSubmit }
-                type="submit"
-                color="secondary"
-                variant="contained"
-            >Submit</Button>
-        </Container>
-    );
+        <Button
+          sx={{ width: "30%" }}
+          style={{ marginTop: 20, marginBottom: 10 }}
+          type="submit"
+          color="secondary"
+          variant="contained"
+        >
+          Submit
+        </Button>
+      </form>
+      <Link to={"/map"}>
+        <Button size="large" style={{ fontWeight: "bold", color: "#1F618D" }}>
+          Let Us Get Your Location
+        </Button>
+      </Link>
+    </Container>
+  );
 };
 
 export default Concern;
